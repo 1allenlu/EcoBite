@@ -1,4 +1,5 @@
 export const MAPBOX_STYLE = 'mapbox://styles/mapbox/dark-v11'
+
 // Centered between Greenwich Village and Downtown Brooklyn
 export const NYC_CENTER = [-73.9920, 40.7080]
 export const NYC_ZOOM = 13
@@ -9,7 +10,7 @@ export const AREA_BOUNDS = [[-74.030, 40.675], [-73.955, 40.743]]
 // Exact neighborhoods that are clickable in the app
 export const ALLOWED_NEIGHBORHOODS = [
   'West Village',
-  'Greenwich Village', 
+  'Greenwich Village',
   'East Village',
   'SoHo-Little Italy-Hudson Square',
   'Tribeca-Civic Center',
