@@ -1,10 +1,11 @@
 # EcoBite
 
-A sustainability-first restaurant discovery platform for NYC. Explore restaurants ranked by estimated carbon footprint, powered by NYC Open Data, building energy records, and LLM-based menu analysis.
+EcoBite is a new and improved social networking app that promotes sustainable eating! EcoBite is branded for NYU students to make more thoughtful choices when selecting and ordering at restaurants. The platform allows users to view restaurants ranked by carbon footprint and by food-sourcing data, powered by OpenAI.
 
 ## What It Does
 
-EcoBite maps 10 NYC neighborhoods (West Village → Downtown Brooklyn) and ranks ~1,000 restaurants by a 4-factor **Green Score** (0–100). Users can search for specific restaurants, filter by category, scan a menu photo for dish-level carbon scores, bookmark favorites, and track their personal CO₂ savings over time.
+EcoBite maps and ranks restaurants in Lower Manhattan and several Brooklyn neighborhoods. It ranks all the restaurants by a green score and allows users to upload a menu to calculate an ingredient score. Users can search for specific restaurants, bookmark favorites, and track personal CO2 savings. 
+
 
 ## Features
 
@@ -13,22 +14,21 @@ EcoBite maps 10 NYC neighborhoods (West Village → Downtown Brooklyn) and ranks
 | **Neighborhood Map** | Mapbox GL with 10 clickable NYC neighborhood polygons, hover states, fly-to on search |
 | **Top 5 Greenest** | Sidebar shows top restaurants per neighborhood ranked by eco-score |
 | **Category Filter** | Toggle between Restaurants and Sips & Sweets (cafés, juice bars, ice cream) |
-| **Restaurant Detail** | Full eco-score breakdown across all 4 components with visual progress bars |
-| **Search** | Live search across all ~1,000 restaurants with score badges and neighborhood context |
+| **Restaurant Detail** | Full eco-score breakdown across all 3 components with visual progress bars |
+| **Search** | Live search across thousands of restaurants with score badges and neighborhood context |
 | **Menu Scanner** | Upload a menu photo → OpenAI Vision extracts dishes → carbon-scores each one |
 | **Profile & Bookmarks** | Save restaurants, log orders, track kg CO₂ saved |
 | **Plant Avatar** | Gamified avatar that grows through 5 stages as you accumulate CO₂ savings |
 
 ## Green Score Model
 
-**Green Score = Energy (50) + Water (20) + Cuisine (20) + Health (10)**
+**Green Score = Energy (50) + Water (25) + Health (25)**
 
 | Component | Max | Data Source | Logic |
 |-----------|-----|-------------|-------|
 | Energy Efficiency | 50 | NYC LL84 Building Energy | `(Energy Star Score / 100) × 50`, default 25 if building not in dataset |
-| Water Efficiency | 20 | NYC LL84 Building Energy | Water use intensity vs. median: ≤0.5× → 20 pts, ≤0.75× → 15, ≤1× → 10, ≤1.5× → 5, higher → 0 |
-| Cuisine Type | 20 | DOHMH Inspection `cuisine_description` | Vegan/Vegetarian = 20, Japanese/Mediterranean = 14, Chinese/Thai/Indian = 10, American/Pizza = 6, Steakhouse/Burgers = 2 |
-| Health Grade | 10 | DOHMH Inspection `grade` + `score` | Grade A / score ≤13 = 10 pts, Grade B / score ≤27 = 5 pts, else 0 |
+| Water Efficiency | 25 | NYC LL84 Building Energy | Water use intensity vs. median: ≤0.5× → 20 pts, ≤0.75× → 15, ≤1× → 10, ≤1.5× → 5, higher → 0 |
+| Health Grade | 25 | DOHMH Inspection `grade` + `score` | Grade A / score ≤13 = 10 pts, Grade B / score ≤27 = 5 pts, else 0 |
 
 **Score tiers:** ≥70 green · 50–69 yellow · <50 red
 
@@ -48,7 +48,7 @@ EcoBite maps 10 NYC neighborhoods (West Village → Downtown Brooklyn) and ranks
 | Routing | React Router 6 |
 | Backend | FastAPI + Uvicorn |
 | Database | SQLite via SQLAlchemy |
-| AI (Menu Scanner) | OpenAI GPT-4o-mini Vision |
+| AI| OpenAI GPT-4o-mini Vision |
 | Data Fetching | httpx |
 
 ## Project Structure
