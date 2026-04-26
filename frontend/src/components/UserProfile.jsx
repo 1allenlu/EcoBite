@@ -107,7 +107,7 @@ const UserProfile = () => {
               )}
             </div>
             <div className="shrink-0 ml-4">
-              <WateringAvatar />
+              <WateringAvatar carbonSaved={carbonSaved} />
             </div>
           </div>
 
