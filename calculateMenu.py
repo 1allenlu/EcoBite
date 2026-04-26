@@ -137,16 +137,38 @@ ALIASES = {
 FISH_FACTOR = 5.0
 
 
+_SECTION_HEADERS = re.compile(
+    r'^(menu|appetizers?|starters?|mains?|main\s+courses?|entrees?|desserts?|beverages?|drinks?|sides?|side\s+dishes?|salads?|soups?|specials?|sandwiches?|burgers?|pizzas?|pastas?|seafood|grills?|small\s+plates?|large\s+plates?|snacks?|bites?|share?|extras?|add\s*ons?)$',
+    re.IGNORECASE
+)
+
 def split_menu(menu_text):
     lines = [line.strip() for line in menu_text.split("\n") if line.strip()]
     dishes = []
 
     for line in lines:
+        # Remove prices
         clean = re.sub(r"\$?\d+(\.\d{2})?", "", line).strip()
+        # Normalize whitespace
         clean = re.sub(r"\s+", " ", clean)
+        # Remove OCR artifact characters — keep only chars valid in food names
+        clean = re.sub(r"[^a-zA-Z0-9\s'\-&,.]", " ", clean)
+        # Normalize whitespace again after cleanup
+        clean = re.sub(r"\s+", " ", clean).strip()
 
-        if len(clean) > 3:
-            dishes.append(clean)
+        # Skip too short or empty
+        if len(clean) < 5:
+            continue
+
+        # Skip ALL CAPS lines — section headers, not dish names
+        if clean.replace(" ", "").isupper():
+            continue
+
+        # Skip common section header words
+        if _SECTION_HEADERS.match(clean):
+            continue
+
+        dishes.append(clean)
 
     return dishes
 
