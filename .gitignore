@@ -14,7 +14,7 @@ dist/
 build/
 
 # Database
-*.db
+# *.db  — committed so teammates don't need to re-seed
 *.sqlite
 
 # OS
