@@ -21,17 +21,17 @@ export const AuthProvider = ({ children }) => {
     {
       id: 1,
       name: "Green Garden Cafe",
-      address: "123 Eco St, San Francisco",
+      address: "123 Eco St, New York",
       cuisine: "Vegetarian",
-      neighborhood: "Mission",
+      neighborhood: "Tribeca",
       savedAt: "2024-04-20"
     },
     {
       id: 2,
       name: "Sustainable Sushi",
-      address: "456 Ocean Ave, San Francisco", 
+      address: "456 Ocean Ave, New York", 
       cuisine: "Japanese",
-      neighborhood: "Castro",
+      neighborhood: "SoHo",
       savedAt: "2024-04-18"
     }
   ]);
