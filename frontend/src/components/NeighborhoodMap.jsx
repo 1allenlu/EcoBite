@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { MAPBOX_STYLE, NYC_CENTER, NYC_ZOOM, NTA_GEOJSON_URL } from '../utils/mapConfig'
+import { MAPBOX_STYLE, NYC_CENTER, NYC_ZOOM, AREA_BOUNDS, ALLOWED_NEIGHBORHOODS, NTA_GEOJSON_URL } from '../utils/mapConfig'
 
 export default function NeighborhoodMap({ onNeighborhoodSelect, selectedId }) {
   const containerRef = useRef(null)
@@ -26,9 +26,9 @@ export default function NeighborhoodMap({ onNeighborhoodSelect, selectedId }) {
       style: MAPBOX_STYLE,
       center: NYC_CENTER,
       zoom: NYC_ZOOM,
-      minZoom: 10,
+      minZoom: 12,
       maxZoom: 15,
-      maxBounds: [[-74.35, 40.44], [-73.62, 40.96]],
+      maxBounds: AREA_BOUNDS,
     })
 
     mapRef.current = map
@@ -50,7 +50,7 @@ export default function NeighborhoodMap({ onNeighborhoodSelect, selectedId }) {
           id: 'neighborhoods-fill',
           type: 'fill',
           source: 'neighborhoods',
-          filter: ['==', ['get', 'NTAType'], '0'],
+          filter: ['in', ['get', 'NTAName'], ['literal', ALLOWED_NEIGHBORHOODS]],
           paint: {
             'fill-color': [
               'case',
@@ -66,7 +66,7 @@ export default function NeighborhoodMap({ onNeighborhoodSelect, selectedId }) {
           id: 'neighborhoods-border',
           type: 'line',
           source: 'neighborhoods',
-          filter: ['==', ['get', 'NTAType'], '0'],
+          filter: ['in', ['get', 'NTAName'], ['literal', ALLOWED_NEIGHBORHOODS]],
           paint: {
             'line-color': [
               'case',
