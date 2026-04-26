@@ -6,7 +6,7 @@ import { AuthProvider } from './context/AuthContext'
 function App() {
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-950">
         <Routes>
           <Route path="/" element={<MapPage />} />
           <Route path="/profile" element={<UserProfile />} />

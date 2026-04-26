@@ -221,7 +221,7 @@ export default function MapPage() {
 
       {/* Sidebar */}
       <div
-        className={`absolute top-0 right-0 h-full w-80 bg-gray-900 border-l border-gray-800 z-10 flex flex-col transition-transform duration-300 ${
+        className={`absolute top-16 right-4 bottom-4 w-80 bg-gray-900 border border-gray-800 rounded-2xl shadow-xl z-10 flex flex-col overflow-hidden transition-transform duration-300 ${
           selected ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

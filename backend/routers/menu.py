@@ -1,23 +1,17 @@
 import sys
 import os
+import tempfile
+from dotenv import load_dotenv
+from fastapi import APIRouter, UploadFile, File, HTTPException
 
 _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
-import tempfile
-from dotenv import load_dotenv
-from fastapi import APIRouter, UploadFile, File, HTTPException
-
-# Load root .env so OPENAI_API_KEY and PYTESSERACT_PATH are available
 load_dotenv(os.path.join(_PROJECT_ROOT, ".env"), override=False)
+load_dotenv()
 
-import pytesseract
-tesseract_path = os.getenv("PYTESSERACT_PATH")
-if tesseract_path:
-    pytesseract.pytesseract.tesseract_cmd = tesseract_path
-
-from scanmenu import scan_menu
+from services.menu_scanner import scan_menu
 from calculateMenu import score_menu, label_score
 
 router = APIRouter(prefix="/menu", tags=["menu"])
@@ -26,6 +20,7 @@ router = APIRouter(prefix="/menu", tags=["menu"])
 @router.post("/scan")
 async def scan_menu_image(file: UploadFile = File(...)):
     suffix = os.path.splitext(file.filename or "")[1] or ".jpg"
+
     with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
         tmp.write(await file.read())
         tmp_path = tmp.name
@@ -53,6 +48,14 @@ async def scan_menu_image(file: UploadFile = File(...)):
                     "label": r["label"],
                 }
                 for r in top5
+            ],
+            "all_dishes": [
+                {
+                    "dish": r["dish"],
+                    "carbon_score_kg_co2e": r["carbon_score_kg_co2e"],
+                    "label": r["label"],
+                }
+                for r in results
             ],
         }
     finally:
