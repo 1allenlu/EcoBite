@@ -54,7 +54,15 @@ export default function NeighborhoodMap({ onNeighborhoodSelect, highlightName })
     })
 
     mapRef.current = map
-    map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right')
+    map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-left')
+
+    // Push the nav control down below the EcoBite logo
+    const navEl = containerRef.current.querySelector('.mapboxgl-ctrl-top-left')
+    if (navEl) {
+      navEl.style.top = '72px'
+      navEl.style.left = '6px'
+      navEl.style.opacity = '0.5'
+    }
     map.fitBounds(AREA_BOUNDS, { padding: 40, duration: 0 })
 
     map.on('load', async () => {
