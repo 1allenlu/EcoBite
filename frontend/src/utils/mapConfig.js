@@ -7,6 +7,20 @@ export const NYC_ZOOM = 12.3
 // Corridor: West 4th St (Greenwich Village) ↔ Downtown Brooklyn
 export const AREA_BOUNDS = [[-74.030, 40.675], [-73.955, 40.743]]
 
+// [name, lat, lon] — used for flyTo on search selection
+export const NEIGHBORHOOD_CENTROIDS = [
+  ['West Village',                          40.7367, -74.0093],
+  ['Greenwich Village',                     40.7301, -73.9950],
+  ['East Village',                          40.7236, -73.9758],
+  ['SoHo-Little Italy-Hudson Square',       40.7241, -74.0043],
+  ['Tribeca-Civic Center',                  40.7161, -74.0074],
+  ['Lower East Side',                       40.7156, -73.9827],
+  ['Chinatown-Two Bridges',                 40.7116, -73.9943],
+  ['Financial District-Battery Park City',  40.7056, -74.0105],
+  ['Downtown Brooklyn-DUMBO-Boerum Hill',   40.6980, -73.9861],
+  ['Brooklyn Heights',                      40.6966, -73.9947],
+]
+
 // Exact neighborhoods that are clickable in the app
 export const ALLOWED_NEIGHBORHOODS = [
   'West Village',

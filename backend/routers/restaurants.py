@@ -52,6 +52,43 @@ def get_top_restaurants(
     }
 
 
+@router.get('/search')
+def search_restaurants(q: str = '', limit: int = 8, category: str = None, db: Session = Depends(get_db)):
+    if not q.strip():
+        return {'results': []}
+
+    query = (
+        db.query(Restaurant)
+        .filter(Restaurant.name.ilike(f'%{q.strip()}%'))
+    )
+    if category:
+        query = query.filter(Restaurant.category == category)
+
+    results = query.order_by(Restaurant.green_score.desc()).limit(limit).all()
+
+    return {
+        'results': [
+            {
+                'id': r.id,
+                'name': r.name,
+                'address': r.address,
+                'neighborhood': r.neighborhood,
+                'cuisine': r.cuisine,
+                'category': r.category,
+                'grade': r.grade,
+                'green_score': r.green_score,
+                'components': {
+                    'energy': r.energy_component,
+                    'water': r.water_component,
+                    'cuisine': r.cuisine_component,
+                    'health': r.health_component,
+                },
+            }
+            for r in results
+        ]
+    }
+
+
 @router.get('/all/stats')
 def get_stats(db: Session = Depends(get_db)):
     from sqlalchemy import func
