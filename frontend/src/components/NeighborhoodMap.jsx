@@ -26,13 +26,15 @@ export default function NeighborhoodMap({ onNeighborhoodSelect, selectedId }) {
       style: MAPBOX_STYLE,
       center: NYC_CENTER,
       zoom: NYC_ZOOM,
-      minZoom: 12,
+      minZoom: 11,
       maxZoom: 15,
       maxBounds: AREA_BOUNDS,
     })
 
     mapRef.current = map
     map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right')
+
+    map.fitBounds(AREA_BOUNDS, { padding: 40, duration: 0 })
 
     map.on('load', async () => {
       try {

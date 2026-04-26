@@ -1,8 +1,8 @@
 export const MAPBOX_STYLE = 'mapbox://styles/mapbox/dark-v11'
 
 // Centered between Greenwich Village and Downtown Brooklyn
-export const NYC_CENTER = [-73.9920, 40.7080]
-export const NYC_ZOOM = 13
+export const NYC_CENTER = [-73.9970, 40.7160]
+export const NYC_ZOOM = 12.3
 
 // Corridor: West 4th St (Greenwich Village) ↔ Downtown Brooklyn
 export const AREA_BOUNDS = [[-74.030, 40.675], [-73.955, 40.743]]
