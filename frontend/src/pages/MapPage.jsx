@@ -13,7 +13,7 @@ function ScoreBadge({ score }) {
   return <span className={`text-sm font-bold ${color}`}>{score.toFixed(0)}</span>
 }
 
-function RestaurantCard({ rank, restaurant, onBookmark, saved }) {
+function RestaurantCard({ rank, restaurant, onBookmark, saved, onClick }) {
   const gradeColor = {
     A: 'bg-eco-green/20 text-eco-green',
     B: 'bg-eco-yellow/20 text-eco-yellow',
@@ -21,7 +21,10 @@ function RestaurantCard({ rank, restaurant, onBookmark, saved }) {
   }[restaurant.grade] ?? 'bg-gray-700 text-gray-400'
 
   return (
-    <div className="bg-gray-800 rounded-xl p-4">
+    <div
+      className="bg-gray-800 rounded-xl p-4 cursor-pointer hover:bg-gray-750 hover:ring-1 hover:ring-eco-green/30 transition-all"
+      onClick={onClick}
+    >
       <div className="flex items-start gap-3">
         <div className="w-8 h-8 rounded-full bg-eco-green/20 flex items-center justify-center text-eco-green text-xs font-bold shrink-0 mt-0.5">
           {rank}
@@ -32,7 +35,7 @@ function RestaurantCard({ rank, restaurant, onBookmark, saved }) {
             <div className="flex items-center gap-1.5 shrink-0">
               <ScoreBadge score={restaurant.green_score} />
               <button
-                onClick={() => onBookmark(restaurant)}
+                onClick={(e) => { e.stopPropagation(); onBookmark(restaurant) }}
                 className="p-1 hover:bg-gray-700 rounded-lg transition-colors"
               >
                 {saved ? (
@@ -94,9 +97,8 @@ function RestaurantDetail({ restaurant, onBack }) {
 
   const components = [
     { label: 'Energy Efficiency', value: restaurant.components.energy, max: 50 },
-    { label: 'Water Efficiency',  value: restaurant.components.water,  max: 20 },
-    { label: 'Cuisine',           value: restaurant.components.cuisine, max: 20 },
-    { label: 'Health Grade',      value: restaurant.components.health,  max: 10 },
+    { label: 'Water Efficiency',  value: restaurant.components.water,  max: 25 },
+    { label: 'Health Grade',      value: restaurant.components.health,  max: 25 },
   ]
 
   return (
@@ -119,13 +121,17 @@ function RestaurantDetail({ restaurant, onBack }) {
 
       <div className="p-6">
         {/* Big score */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-2">
           <span className="text-xs text-gray-400 uppercase tracking-widest font-medium">Eco Score</span>
           <span className={`text-4xl font-black ${scoreColor}`}>
             {restaurant.green_score.toFixed(0)}
             <span className="text-lg font-normal text-gray-500">/100</span>
           </span>
         </div>
+        <p className="text-xs text-gray-500 italic mb-6">
+          If you are a restaurant owner, consider adding where your ingredients are sourced for a more reliable calculation!
+        </p>
+
 
         {/* Breakdown */}
         <div className="space-y-4">
@@ -286,6 +292,7 @@ export default function MapPage() {
                         restaurant={r}
                         saved={isRestaurantSaved(r.id)}
                         onBookmark={handleBookmark}
+                        onClick={() => setFocusedRestaurant(r)}
                       />
                     ))}
                   </div>

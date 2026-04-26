@@ -33,6 +33,7 @@ def get_top_restaurants(
                 'id': r.id,
                 'name': r.name,
                 'address': r.address,
+                'neighborhood': r.neighborhood,
                 'cuisine': r.cuisine,
                 'category': r.category,
                 'grade': r.grade,

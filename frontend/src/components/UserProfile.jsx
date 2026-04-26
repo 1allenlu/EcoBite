@@ -7,6 +7,7 @@ import {
   ArrowLeftIcon,
   ClipboardDocumentListIcon,
   XMarkIcon,
+  TrophyIcon,
 } from '@heroicons/react/24/outline';
 import { BookmarkIcon as BookmarkSolid } from '@heroicons/react/24/solid';
 import MenuUpload from './MenuUpload';
@@ -159,6 +160,17 @@ const UserProfile = () => {
               <ClipboardDocumentListIcon className="h-4 w-4" />
               My Orders ({orderedDishes.length})
             </button>
+            <button
+              onClick={() => setActiveTab('leaderboard')}
+              className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === 'leaderboard'
+                  ? 'border-eco-green text-eco-green'
+                  : 'border-transparent text-gray-400 hover:text-white'
+              }`}
+            >
+              <TrophyIcon className="h-4 w-4" />
+              Leaderboard
+            </button>
           </div>
 
           <div className="p-6">
@@ -166,6 +178,9 @@ const UserProfile = () => {
               <SavedRestaurants restaurants={savedRestaurants} onUnsave={unsaveRestaurant} onLogOrder={setLogOrderRestaurant} />
             )}
             {activeTab === 'uploads' && <OrderedDishes orders={orderedDishes} />}
+            {activeTab === 'leaderboard' && (
+              <Leaderboard carbonSaved={carbonSaved} username={user.username} />
+            )}
           </div>
         </div>
       </div>
@@ -179,6 +194,68 @@ const UserProfile = () => {
     </div>
   );
 };
+
+const FAKE_USERS = [
+  { name: 'Maya C.',    kg: 48.3 },
+  { name: 'Jordan S.', kg: 41.7 },
+  { name: 'Priya P.',  kg: 38.2 },
+  { name: 'Alex K.',   kg: 31.5 },
+  { name: 'Sam R.',    kg: 27.8 },
+  { name: 'Taylor J.', kg: 22.4 },
+  { name: 'Morgan L.', kg: 18.9 },
+  { name: 'Casey B.',  kg: 14.3 },
+  { name: 'Riley D.',  kg: 9.7  },
+  { name: 'Avery W.',  kg: 4.2  },
+]
+
+const Leaderboard = ({ carbonSaved, username }) => {
+  const me = { name: username || 'You', kg: carbonSaved, isMe: true }
+  const all = [...FAKE_USERS.map(u => ({ ...u, isMe: false })), me]
+    .sort((a, b) => b.kg - a.kg)
+
+  const myRank = all.findIndex(u => u.isMe) + 1
+
+  const medal = { 1: '🌳', 2: '🪴', 3: '🌱' }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-xs text-gray-400 uppercase tracking-widest font-medium">CO₂ Saved Rankings</p>
+        <span className="text-xs text-gray-500">Your rank: <span className="text-eco-green font-bold">#{myRank}</span></span>
+      </div>
+
+      <div className="space-y-2">
+        {all.map((entry, i) => {
+          const rank = i + 1
+          const isTop3 = rank <= 3
+          return (
+            <div
+              key={entry.name}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition-colors ${
+                entry.isMe
+                  ? 'bg-eco-green/10 border-eco-green/40'
+                  : 'bg-gray-800 border-gray-700'
+              }`}
+            >
+              <div className="w-7 text-center shrink-0">
+                {isTop3
+                  ? <span className="text-base">{medal[rank]}</span>
+                  : <span className="text-xs text-gray-500 font-medium">#{rank}</span>
+                }
+              </div>
+              <p className={`flex-1 text-sm font-medium ${entry.isMe ? 'text-eco-green' : 'text-white'}`}>
+                {entry.name} {entry.isMe && <span className="text-xs text-gray-400 font-normal">(you)</span>}
+              </p>
+              <span className={`text-sm font-bold ${entry.isMe ? 'text-eco-green' : 'text-gray-300'}`}>
+                {entry.kg.toFixed(1)} kg
+              </span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
 
 const SavedRestaurants = ({ restaurants, onUnsave, onLogOrder }) => {
   if (restaurants.length === 0) {
