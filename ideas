@@ -1,0 +1,41 @@
+Metrics You Can Actually Get (No Scraping)
+1. Cuisine Category (Highest Impact) 🥩🥗
+Yelp gives you this for free. Map it directly to carbon intensity — this alone accounts for the biggest variance between restaurants:
+Vegan / Vegetarian     → very low  🟢
+Mediterranean / Japanese → low     🟢
+Seafood                → low-med   🟡
+Pizza / Italian        → medium    🟡
+American / Burgers     → high      🟠
+BBQ / Steakhouse       → very high 🔴
+Backed by FAO data — cuisine type is the single strongest predictor of food carbon footprint.
+2. NYC Energy Grade (Building Efficiency) ⚡
+From NYC Open Data (LL84 benchmarking). Tells you how energy-efficient the building is. Free, public, covers all large buildings.
+3. Price Range (Portion/Ingredient Quality Proxy) 💰
+Yelp gives you $ to $$$$. Counterintuitively:
+
+$ fast food → high processed meat, high waste
+$$$$ fine dining → smaller portions, often higher quality sourcing
+
+Not perfect but a defensible signal.
+4. Yelp Categories / Attributes 🏷️
+Yelp returns tags like:
+
+"vegan_options" → positive signal
+"organic" → positive
+"sustainable" → positive
+"good_for_groups" → proxy for high volume/waste
+
+These are boolean flags, easy to score.
+5. Health Inspection Score 🏥
+NYC Open Data has this. A proxy for operational quality — restaurants that handle food well tend to waste less.
+6. Restaurant Age / Longevity 📅
+Older, established restaurants tend to have more stable supply chains and less food waste than high-turnover spots. Yelp gives you date_opened.
+
+Recommended Scoring Formula (No Scraping)
+Green Score (0-100) =
+
+  45%  Cuisine category carbon weight     ← biggest signal
+  20%  NYC energy grade                   ← building efficiency  
+  15%  Yelp sustainability attributes     ← vegan, organic flags
+  10%  Price range proxy                  ← portion/sourcing signal
+  10%  Health inspection score            ← operational quality
